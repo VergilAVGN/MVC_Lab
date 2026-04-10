@@ -1,0 +1,26 @@
+<h1>
+    {% if recipe %}Edit recipe{% else %}Add recipe{% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Name:</label><br>
+    <input type="text" name="name" 
+           value="{{ recipe.name|default:'' }}" required><br><br>
+
+    <label>Ingredients:</label><br>
+    <textarea name="ingredients" rows="5" required>
+{{ recipe.ingredients|default:'' }}
+    </textarea><br><br>
+
+    <label>Instructions:</label><br>
+    <textarea name="instructions" rows="5" required>
+{{ recipe.instructions|default:'' }}
+    </textarea><br><br>
+
+    <button type="submit">Save</button>
+</form>
+
+<br>
+<a href="{% url 'recipe_list' %}">←Back</a>
