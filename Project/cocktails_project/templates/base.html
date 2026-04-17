@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cocktails</title>
+
+    <link rel="stylesheet" href="{% static 'admin/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
+
+    <style>
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+</style>
+</head>
+
+<body class="app-recipes">
+
+<div id="header">
+    <div id="branding">
+        <h1>Cocktail App</h1>
+    </div>
+
+ <div style="margin-top:10px;">
+        <form method="get" action="/">
+            <input type="text" name="q" placeholder="Search recipes..." value="{{ request.GET.q }}">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div id="user-tools">
+        {% if user.is_authenticated %}
+        Hello, {{ user.username }}!
+    <form method="post" action="/accounts/logout/" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+        {% else %}
+            <a href="/accounts/login/">Login</a> |
+            <a href="/register/">Register</a>
+        {% endif %}
+    </div>
+</div>
+
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>
