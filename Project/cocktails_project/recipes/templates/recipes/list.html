@@ -1,6 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+
+<h1>Recipe List</h1>
 {% if user.is_authenticated %}
-    Hello, {{ user.username }}!
-    <a href="/accounts/logout/">Logout</a>
-{% else %}
-    <a href="/accounts/login/">Login</a>
+     <a href="{% url 'my_recipes' %}">My Recipes</a> |
 {% endif %}
+<a href="{% url 'recipe_create' %}">Add Recipe</a> | <a href="{% url 'recipe_list' %}">All Recipes</a>
+
+Sort by:
+<a href="?sort=date">By Date</a> |
+<a href="?sort=name">By Name</a> |
+<a href="?sort=author">By Author</a>
+
+{% for r in recipes %}
+<div class="card">
+    {% if r.image %}
+        <img src="{{ r.image.url }}">
+    {% endif %}
+
+    <h3>{{ r.name }}</h3>
+    <p><b>Author:</b> {{ r.user.username }}</p>
+    <h3>Ingredients</h3>
+    <p>{{ r.ingredients|linebreaks }}</p>
+    <h3>Instructions</h3>
+    <p>{{ r.instructions|linebreaks }}</p>
+
+    {% if user == r.user or user.is_staff %}
+        <a href="{% url 'recipe_update' r.id %}">Edit</a>
+        <a href="{% url 'recipe_delete' r.id %}">Delete</a>
+    {% endif %}
+</div>
+{% endfor %}
+
+</div>
+{% endblock %}
