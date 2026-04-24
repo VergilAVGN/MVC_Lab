@@ -1,0 +1,49 @@
+.image-upload {
+    position: relative;
+    margin: 20px 0;
+}
+
+#dropZone {
+    opacity: 0;
+    transition: 0.3s;
+    border: 2px dashed #aaa;
+    padding: 20px;
+    margin-top: 10px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.image-upload:hover #dropZone {
+    opacity: 1;
+}
+
+#dropZone.active {
+    border-color: #007bff;
+    background: #f0f8ff;
+}
+
+#preview {
+    display: block;
+    margin-top: 10px;
+    max-width: 250px;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 10px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: vertical;
+    box-sizing: border-box;
+    line-height: 1.5;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}

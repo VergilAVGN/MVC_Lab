@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/image_upload.css' %}">
+{% endblock %}
 
 {% block content %}
 
@@ -13,18 +18,40 @@
            value="{{ recipe.name|default:'' }}"><br><br>
 
     <label>Coctail Image:</label><br>
-        <input type="file" name="image"><br><br>
+        <div class="image-upload">
+    <input type="file" name="image" id="imageInput" hidden>
+    <input type="hidden" name="remove_image" id="removeImageInput" value="0">
 
-    <textarea name="ingredients" placeholder="Ingredients">
-{{ recipe.ingredients|default:'' }}
-    </textarea><br><br>
+    <button type="button" id="uploadBtn">Add Image</button>
 
-    <textarea name="instructions" placeholder="Instruction">
-{{ recipe.instructions|default:'' }}
-    </textarea><br><br>
+    <div id="dropZone">
+        Drag and drop
+    </div>
+
+    <div id="imageWrapper" {% if not recipe.image %}style="display:none;"{% endif %}>
+    
+    {% if recipe.image %}
+        <img id="preview" src="{{ recipe.image.url }}">
+    {% else %}
+        <img id="preview">
+    {% endif %}
+
+    <button type="button" id="removeImageBtn">Remove Image</button>
+
+</div>
+</div>
+       
+    <label for="ingredients">Ingredients:</label><br>
+    <textarea id="ingredients" name="ingredients" placeholder="Ingredients">{% if recipe.ingredients %}{{ recipe.ingredients }}{% endif %}</textarea><br><br>
+
+    <label for="instructions">Instructions:</label><br>
+    <textarea id="instructions" name="instructions" placeholder="Instructions">{% if recipe.instructions %}{{ recipe.instructions }}{% endif %}</textarea><br><br>
 
     <button type="submit">Save</button>
     <button type="button" onclick="history.back()">Cancel</button>
 </form>
+
+<script src="{% static 'js/image_upload.js' %}"></script>
+<script src="{% static 'js/autoformat.js' %}"></script>
 
 {% endblock %}

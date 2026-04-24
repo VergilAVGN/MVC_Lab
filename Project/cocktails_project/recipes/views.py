@@ -32,6 +32,10 @@ def recipe_update(request, id):
         recipe.instructions = request.POST.get('instructions')
         if request.FILES.get('image'):
             recipe.image = request.FILES.get('image')
+
+        if request.POST.get('remove_image'):
+            recipe.image.delete()
+            recipe.image = None
         recipe.save()
         return redirect('recipe_list')
 
