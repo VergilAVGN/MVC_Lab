@@ -14,23 +14,28 @@ Sort by:
 <a href="?sort=author">By Author</a>
 
 {% for r in recipes %}
+<a href="{% url 'recipe_detail' r.id %}" class="card-link">
 <div class="card">
     {% if r.image %}
-        <img src="{{ r.image.url }}">
+    <div class="card-image">
+        <img src="{{ r.image.url }}" alt="{{ r.name|default:'Recipe' }}">
+    </div>
     {% endif %}
 
-    <h3>{{ r.name }}</h3>
-    <p><b>Author:</b> {{ r.user.username }}</p>
-    <h3>Ingredients</h3>
-    <p>{{ r.ingredients|linebreaks }}</p>
-    <h3>Instructions</h3>
-    <p>{{ r.instructions|linebreaks }}</p>
+    <h3 class="card-title">{{ r.name|default:"Untitled recipe" }}</h3>
+    <p class="card-meta"><b>Author:</b> {{ r.user.username }}</p>
 
-    {% if user == r.user or user.is_staff %}
-        <a href="{% url 'recipe_update' r.id %}">Edit</a>
-        <a href="{% url 'recipe_delete' r.id %}">Delete</a>
-    {% endif %}
+    <h4 class="card-section">Ingredients</h4>
+    <p class="card-excerpt">{{ r.ingredients|truncatewords:22|linebreaks }}</p>
+
+    <h4 class="card-section">Instructions</h4>
+    <p class="card-excerpt">{{ r.instructions|truncatewords:15|linebreaks }}</p>
+
+    <p class="card-more">Read full recipe →</p>
 </div>
+</a>
+{% empty %}
+<p>No recipes yet!</p>
 {% endfor %}
 
 </div>

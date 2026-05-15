@@ -17,7 +17,7 @@ def recipe_create(request):
             recipe = form.save(commit=False)
             recipe.user = request.user
             recipe.save()
-            return redirect('recipe_list')
+            return redirect('recipe_detail', id=recipe.id)
     else:
         form = RecipeForm()
 
@@ -33,7 +33,7 @@ def recipe_update(request, id):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
-            return redirect("recipe_list")
+            return redirect('recipe_detail', id=obj.id)
     else:
         form = RecipeForm(instance=recipe)
     return render(request, "recipes/form.html", {"form": form, "recipe": recipe})
@@ -65,6 +65,10 @@ def recipe_list(request):
 
     return render(request, 'recipes/list.html', {'recipes': recipes, 'query': query})
 
+def recipe_detail(request, id):
+    recipe = get_object_or_404(Recipe, id=id)
+    return render(request, 'recipes/detail.html', {'recipe': recipe})
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -82,3 +86,4 @@ def register(request):
 def my_recipes(request):
     recipes = Recipe.objects.filter(user=request.user).order_by('-id')     
     return render(request, 'recipes/list.html', {'recipes': recipes})
+
