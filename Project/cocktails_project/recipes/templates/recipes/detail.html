@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+<p><a href="{% url 'recipe_list' %}">← Back to list</a></p>
+
+<div class="card">
+    {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+    {% endif %}
+
+    <h1>{{ recipe.name }}</h1>
+    <p><b>Author:</b> {{ recipe.user.username }}</p>
+    <p><b>Added:</b> {{ recipe.created_at|date:"d.m.Y H:i" }}</p>
+
+    <h2>Ingredients</h2>
+    <p>{{ recipe.ingredients|linebreaks }}</p>
+
+    <h2>Instructions</h2>
+    <p>{{ recipe.instructions|linebreaks }}</p>
+
+    {% if user == recipe.user or user.is_staff %}
+        <a href="{% url 'recipe_update' recipe.id %}">Edit</a> |
+        <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
+    {% endif %}
+</div>
+
+</div>
+{% endblock %}
