@@ -1,13 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="auth-page">
+    <div class="auth-card">
+        <h2>Welcome back</h2>
 
-<h2>Login</h2>
+        {% if form.non_field_errors %}
+        <div class="auth-errors">
+            {% for error in form.non_field_errors %}
+            <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+        <form method="post" class="auth-form">
+            {% csrf_token %}
 
+            <div class="form-row">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <div class="field-error">{{ form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-row">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                <div class="field-error">{{ form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn-primary">Log in</button>
+        </form>
+
+        <p class="auth-footer">
+            No account yet? <a href="{% url 'register' %}">Create one</a>
+        </p>
+    </div>
+</div>
 {% endblock %}
