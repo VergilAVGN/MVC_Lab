@@ -7,7 +7,7 @@
 
 <div class="card">
     {% if recipe.image %}
-        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" style="width:100%;max-height:320px;object-fit:cover;border-radius:10px;">
     {% endif %}
 
     <h1>{{ recipe.name }}</h1>
@@ -20,11 +20,64 @@
     <h2>Instructions</h2>
     <p>{{ recipe.instructions|linebreaks }}</p>
 
-    {% if user == recipe.user or user.is_staff %}
-        <a href="{% url 'recipe_update' recipe.id %}">Edit</a> |
-        <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
-    {% endif %}
+    <div class="recipe-actions">
+        {% if user == recipe.user %}
+            <a href="{% url 'recipe_update' recipe.id %}">Edit</a> |
+            <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
+        {% elif user.is_staff %}
+            <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'favorite_toggle' recipe.id %}" class="inline-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-favorite">
+                    {% if is_favorite %}♥ Remove from favorites{% else %}♡ Add to favorites{% endif %}
+                </button>
+            </form>
+        {% else %}
+            <p class="hint"><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to add favorites.</p>
+        {% endif %}
+    </div>
 </div>
+
+<section class="comments-section">
+    <h2>Comments ({{ comments|length }})</h2>
+
+    {% for c in comments %}
+    <div class="comment">
+        <p class="comment-meta"><b>{{ c.user.username }}</b> · {{ c.created_at|date:"d.m.Y H:i" }}</p>
+        <p>{{ c.text|linebreaks }}</p>
+        {% if user == c.user %}
+            <form method="post" action="{% url 'comment_delete' recipe.id c.id %}" class="inline-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-small">Delete comment</button>
+            </form>
+        {% elif user.is_staff or user.is_superuser %}
+            <form method="post" action="{% url 'comment_delete' recipe.id c.id %}" class="inline-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-small btn-moderate">Delete (admin)</button>
+            </form>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p class="hint">No comments yet. Be the first!</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <h3>Write a comment</h3>
+    <form method="post" action="{% url 'comment_add' recipe.id %}" class="comment-form">
+        {% csrf_token %}
+        {{ comment_form.text }}
+        {% if comment_form.text.errors %}
+            <div class="form-errors">{{ comment_form.text.errors }}</div>
+        {% endif %}
+        <button type="submit" class="btn-primary">Post comment</button>
+    </form>
+    {% else %}
+    <p class="hint"><a href="{% url 'login' %}?next={{ request.path }}">Log in</a> to write a comment.</p>
+    {% endif %}
+</section>
 
 </div>
 {% endblock %}

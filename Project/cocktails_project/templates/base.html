@@ -78,15 +78,201 @@
     box-shadow: 0 0 16px rgba(0,0,0,0.15);
 }
 
-#branding h1 a {
-    color: inherit !important;
-    text-decoration: none !important;
-    cursor: pointer;
+.recipe-actions {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd;
 }
 
-#branding h1 a:hover {
-    text-decoration: none !important;
-    color: inherit !important;
+.inline-form {
+    display: inline-block;
+    margin-left: 8px;
+}
+
+.btn-favorite,
+.btn-primary {
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #417690;
+    background: #79aec8;
+    color: #fff;
+}
+
+.btn-favorite:hover,
+.btn-primary:hover {
+    background: #609ab6;
+}
+
+.btn-small {
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+}
+
+.btn-moderate {
+    border-color: #ba2121;
+    color: #ba2121;
+    background: #fff5f5;
+}
+
+.comments-section {
+    background: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.comment {
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-meta {
+    margin: 0 0 6px;
+    color: #555;
+}
+
+.comment-form textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 80px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.hint {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.form-errors {
+    color: #ba2121;
+    margin-bottom: 8px;
+}
+
+.messages {
+    list-style: none;
+    padding: 10px 15px;
+    margin: 0 0 15px;
+    border-radius: 6px;
+    background: #dff0d8;
+    color: #333;
+}
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px 60px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #fff;
+    padding: 32px 36px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+}
+
+.auth-card h2 {
+    margin: 0 0 6px;
+    padding: 0;
+    font-size: 1.75rem;
+    color: #1a1a1a;
+}
+
+.auth-subtitle {
+    margin: 0 0 24px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.auth-form .form-row {
+    margin-bottom: 18px;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: #fafafa;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #79aec8;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(121, 174, 200, 0.25);
+}
+
+.auth-form .helptext {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.35;
+}
+
+.auth-form .field-error,
+.auth-errors {
+    color: #ba2121;
+    font-size: 0.85rem;
+    margin-top: 6px;
+}
+
+.auth-errors {
+    padding: 10px 12px;
+    background: #fff5f5;
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.auth-footer {
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.auth-footer a {
+    color: #417690;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
 }
 
 </style>
@@ -97,7 +283,7 @@
 
 <div id="header">
     <div id="branding">
-        <h1><a href="{% url 'recipe_list' %}">Cocktail App</a></h1>
+        <h1>Cocktail App</h1>
     </div>
 
  <div style="margin-top:10px;">
@@ -110,6 +296,8 @@
     <div id="user-tools">
         {% if user.is_authenticated %}
         Hello, {{ user.username }}!
+        |
+        <a href="{% url 'my_favorites' %}">Favorites</a> |
     <form method="post" action="/accounts/logout/" style="display:inline;">
         {% csrf_token %}
         <button type="submit">Logout</button>
@@ -122,6 +310,13 @@
 </div>
 
 <div id="content">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% block content %}
     {% endblock %}
 </div>

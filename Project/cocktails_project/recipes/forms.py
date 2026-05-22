@@ -2,7 +2,8 @@ from __future__ import annotations
 import re
 from django import forms
 from PIL import Image
-from .models import Recipe
+from .models import Recipe, Comment
+
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
@@ -74,3 +75,22 @@ class RecipeForm(forms.ModelForm):
             except Exception:
                 pass
         return image
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': 'Write a comment...',
+            }),
+        }
+
+    def clean_text(self) -> str:
+        text = (self.cleaned_data.get('text') or '').strip()
+        if len(text) < 3:
+            raise forms.ValidationError('Comment must be at least 3 characters.')
+        if len(text) > 500:
+            raise forms.ValidationError('Comment is too long (max 500 characters).')
+        return text
