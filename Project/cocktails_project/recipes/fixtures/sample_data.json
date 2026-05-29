@@ -1,0 +1,110 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1000,
+    "fields": {
+      "password": "pbkdf2_sha256$1200000$gsTr5lYSCUeZUcbZNOQO4K$R/twsHD87dL9xUck1P23Yc6FmjMyXp1fs59vuMjdfdw=",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "demo",
+      "first_name": "",
+      "last_name": "",
+      "email": "demo@example.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1001,
+    "fields": {
+      "user": 1000,
+      "name": "Mojito",
+      "ingredients": "- 50 ml white rum\n- 25 ml lime juice\n- 2 tsp sugar\n- 6 mint leaves\n- soda water",
+      "instructions": "1. Muddle mint with sugar and lime juice in a glass.\n2. Add rum and fill with crushed ice.\n3. Top with soda water and stir gently.\n4. Garnish with mint sprig.",
+      "created_at": "2026-01-16T12:00:00Z",
+      "image": null,
+      "image_url": "https://cocktaildb.com/wp-content/uploads/2022/05/Cuban-Mojito-Rum-Cocktail.jpg"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1002,
+    "fields": {
+      "user": 1000,
+      "name": "Margarita",
+      "ingredients": "- 50 ml tequila\n- 25 ml triple sec\n- 25 ml lime juice\n- salt for rim",
+      "instructions": "1. Rim the glass with salt.\n2. Shake tequila, triple sec, and lime juice with ice.\n3. Strain into the prepared glass.\n4. Garnish with lime wedge.",
+      "created_at": "2026-01-17T14:30:00Z",
+      "image": null,
+      "image_url": "https://cdn.aniagotuje.com/pictures/articles/2022/12/37029414-v-1500x1500.jpg"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1003,
+    "fields": {
+      "user": 1000,
+      "name": "Old Fashioned",
+      "ingredients": "- 60 ml bourbon\n- 1 sugar cube\n- 2 dashes Angostura bitters\n- orange peel",
+      "instructions": "1. Muddle sugar cube with bitters and a splash of water.\n2. Add bourbon and large ice cube.\n3. Stir until well chilled.\n4. Express orange peel over the glass and garnish.",
+      "created_at": "2026-01-18T18:00:00Z",
+      "image": null,
+      "image_url":"https://www.liquor.com/thmb/rxbQEXR-CQpExjfS8xtOAWXLovM=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/bourbon-old-fashioned-4000x4000-primary-ig-f0ce04bec6754db187ab1e8a16fd45c3.jpg"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1004,
+    "fields": {
+      "user": 1000,
+      "name": "Piña Colada",
+      "ingredients": "- 50 ml white rum\n- 30 ml coconut cream\n- 90 ml pineapple juice",
+      "instructions": "1. Blend all ingredients with ice until smooth.\n2. Pour into a chilled hurricane glass.\n3. Garnish with pineapple wedge and cherry.",
+      "created_at": "2026-01-19T11:15:00Z",
+      "image": null,
+      "image_url": "https://barbits.co.uk/cdn/shop/articles/how-to-make-a-classic-pina-colada-tropical-creamy-refreshing-2181301.png?v=1762192111"
+    }
+  },
+  {
+    "model": "recipes.comment",
+    "pk": 2001,
+    "fields": {
+      "recipe": 1001,
+      "user": 1000,
+      "text": "Perfect summer drink — mint makes all the difference!",
+      "created_at": "2026-01-20T09:00:00Z"
+    }
+  },
+  {
+    "model": "recipes.comment",
+    "pk": 2002,
+    "fields": {
+      "recipe": 1001,
+      "user": 1000,
+      "text": "I use a bit less sugar and more lime. Still amazing.",
+      "created_at": "2026-01-21T16:45:00Z"
+    }
+  },
+  {
+    "model": "recipes.comment",
+    "pk": 2003,
+    "fields": {
+      "recipe": 1002,
+      "user": 1000,
+      "text": "Classic margarita ratio — works every time with good tequila.",
+      "created_at": "2026-01-22T20:10:00Z"
+    }
+  },
+  {
+    "model": "recipes.comment",
+    "pk": 2004,
+    "fields": {
+      "recipe": 1003,
+      "user": 1000,
+      "text": "Stir, do not shake. The orange oils from the peel are essential.",
+      "created_at": "2026-01-23T13:30:00Z"
+    }
+  }
+]

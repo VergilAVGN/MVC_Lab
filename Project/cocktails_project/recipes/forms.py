@@ -7,7 +7,10 @@ from .models import Recipe, Comment
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ["name", "ingredients", "instructions", "image"]
+        fields = ["name", "ingredients", "instructions", "image","image_url"]
+        widgets = {
+            "image_url": forms.HiddenInput(),
+        }
     def clean_name(self) -> str:
         name: str = (self.cleaned_data.get("name") or "").strip()
         if len(name) < 3:
