@@ -8,6 +8,11 @@ class Recipe(models.Model):
     instructions = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='recipes/', null=True, blank=True)
+    image_url = models.URLField(
+        max_length=500,
+        blank=True,
+        help_text='External image URL',
+    )
 
     def __str__(self):
         return self.name

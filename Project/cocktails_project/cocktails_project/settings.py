@@ -128,3 +128,6 @@ STATICFILES_DIRS = [
 #image settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
+
+# Base URL for TheCocktailDB (no trailing endpoint — use search.php in cocktail_api.py)
+COCKTAILDB_API_URL = "https://www.thecocktaildb.com/api/json/v1/1"

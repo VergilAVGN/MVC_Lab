@@ -5,19 +5,31 @@ from django.contrib.auth import login
 from .forms import RecipeForm, CommentForm
 from .models import Recipe, Comment, Favorite
 from django.contrib import messages
+from .cocktail_api import fetch_cocktail_by_name
 # Create your views here.
 #add recipe
 @login_required
 def recipe_create(request):
+    api_initial = {}
+    if request.method == "GET" and request.GET.get("api_name"):
+        mapped = fetch_cocktail_by_name(request.GET.get("api_name"))
+        if mapped:
+            api_initial = mapped
+            messages.success(request, "Recipe loaded from TheCocktailDB. Review and save.")
+        else:
+            messages.error(request, "Cocktail not found in API.")
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             recipe = form.save(commit=False)
             recipe.user = request.user
+            #image Url 
+            if 'image_url' in request.POST and request.POST['image_url']:
+                recipe.image_url = request.POST['image_url']
             recipe.save()
             return redirect('recipe_detail', id=recipe.id)
     else:
-        form = RecipeForm()
+        form = RecipeForm(initial=api_initial)
 
     return render(request, 'recipes/form.html', {'form': form})
 

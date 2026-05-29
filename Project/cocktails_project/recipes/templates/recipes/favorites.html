@@ -12,6 +12,10 @@
     <div class="card-image">
         <img src="{{ r.image.url }}" alt="{{ r.name|default:'Recipe' }}">
     </div>
+    {% elif r.image_url %}
+    <div class="card-image">
+        <img src="{{ r.image_url }}" alt="{{ r.name|default:'Recipe' }}">
+    </div>
     {% endif %}
 
     <h3 class="card-title">{{ r.name|default:"Untitled recipe" }}</h3>

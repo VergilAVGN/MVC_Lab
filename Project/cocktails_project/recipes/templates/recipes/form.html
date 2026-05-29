@@ -11,11 +11,25 @@
     {% if recipe %}Edit recipe{% else %}Add recipe{% endif %}
 </h1>
 
+{% if not recipe %}
+<div class="api-import" style="margin-bottom:24px;padding:16px;background:#f0f7fa;border-radius:8px;">
+    <h3>Import from TheCocktailDB</h3>
+    <p class="hint">Enter a cocktail name (e.g. Mojito, Margarita).</p>
+    <form method="get" action="{% url 'recipe_create' %}">
+        <input type="text" name="api_name" placeholder="Cocktail name"
+               value="{{ request.GET.api_name|default:'' }}"
+               style="width:70%;padding:8px;margin-right:8px;">
+        <button type="submit">Load from API</button>
+    </form>
+</div>
+{% endif %}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+    {{ form.image_url }}
 
     <input type="text" name="name" placeholder="Name"
-           value="{{ recipe.name|default:'' }}"><br><br>
+           value="{{ recipe.name|default:form.name.value|default:'' }}"><br><br>
     {% if form.name.errors %}
       <div style="color:red;">{{ form.name.errors }}</div>
     {% endif %}
@@ -35,6 +49,10 @@
     
     {% if recipe.image %}
         <img id="preview" src="{{ recipe.image.url }}">
+    {% elif recipe.image_url %}
+        <img id="preview" src="{{ recipe.image_url }}">
+    {% elif form.image_url.value %}
+        <img id="preview" src="{{ form.image_url.value }}">
     {% else %}
         <img id="preview">
     {% endif %}
@@ -48,13 +66,13 @@
     {% endif %}
        
     <label for="ingredients">Ingredients:</label><br>
-    <textarea id="ingredients" name="ingredients" placeholder="Ingredients">{{ recipe.ingredients|default:'' }}</textarea><br><br>
+    <textarea id="ingredients" name="ingredients" placeholder="Ingredients">{{ recipe.ingredients|default:form.ingredients.value|default:'' }}</textarea><br><br>
     {% if form.ingredients.errors %}
       <div style="color:red;">{{ form.ingredients.errors }}</div>
     {% endif %}
 
     <label for="instructions">Instructions:</label><br>
-    <textarea id="instructions" name="instructions" placeholder="Instructions">{{ recipe.instructions|default:'' }}</textarea><br><br>
+    <textarea id="instructions" name="instructions" placeholder="Instructions">{{ recipe.instructions|default:form.instructions.value|default:'' }}</textarea><br><br>
     {% if form.instructions.errors %}
       <div style="color:red;">{{ form.instructions.errors }}</div>
     {% endif %}
@@ -65,5 +83,35 @@
 
 <script src="{% static 'js/image_upload.js' %}"></script>
 <script src="{% static 'js/autoformat.js' %}"></script>
+
+<script>
+// Show preview for URL image on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const imageUrlField = document.querySelector('input[name="image_url"]');
+    const preview = document.getElementById('preview');
+    const imageWrapper = document.getElementById('imageWrapper');
+    
+    function updatePreview() {
+        const urlValue = imageUrlField.value.trim();
+        if (urlValue) {
+            preview.src = urlValue;
+            if (imageWrapper) {
+                imageWrapper.style.display = 'block';
+            }
+        }
+    }
+    
+    // Show preview on load if URL exists
+    if (imageUrlField && imageUrlField.value) {
+        updatePreview();
+    }
+    
+    // Update preview when URL field changes
+    if (imageUrlField) {
+        imageUrlField.addEventListener('change', updatePreview);
+        imageUrlField.addEventListener('input', updatePreview);
+    }
+});
+</script>
 
 {% endblock %}
