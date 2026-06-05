@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-28d!5v%=6_@+130o5=pt#!0bao+p4#o&i=4#kgy)ezk&z^ho!(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
 
 # Application definition
@@ -127,7 +127,7 @@ STATICFILES_DIRS = [
 ]
 #image settings
 MEDIA_URL = '/media/'
-MEDIA_ROOT = 'media'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Base URL for TheCocktailDB (no trailing endpoint — use search.php in cocktail_api.py)
 COCKTAILDB_API_URL = "https://www.thecocktaildb.com/api/json/v1/1"

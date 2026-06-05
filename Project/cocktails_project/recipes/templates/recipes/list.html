@@ -41,6 +41,23 @@ Sort by:
 {% empty %}
 <p>No recipes yet!</p>
 {% endfor %}
+{% if page_obj.has_other_pages %}
+<div class="pagination" style="margin: 24px 0;">
+    {% if page_obj.has_previous %}
+        <a href="?{% if query %}q={{ query }}&{% endif %}{% if sort %}sort={{ sort }}&{% endif %}page={{ page_obj.previous_page_number }}">← Previous</a>
+    {% else %}
+        <span style="opacity: .5;">← Previous</span>
+    {% endif %}
+
+    <span style="margin: 0 12px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?{% if query %}q={{ query }}&{% endif %}{% if sort %}sort={{ sort }}&{% endif %}page={{ page_obj.next_page_number }}">Next →</a>
+    {% else %}
+        <span style="opacity: .5;">Next →</span>
+    {% endif %}
+</div>
+{% endif %}
 
 </div>
 {% endblock %}
