@@ -29,9 +29,15 @@
     <div class="recipe-actions">
         {% if user == recipe.user %}
             <a href="{% url 'recipe_update' recipe.id %}">Edit</a> |
-            <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
+            <form method="post" action="{% url 'recipe_delete' recipe.id %}" class="inline-form" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-small">Delete</button>
+            </form>
         {% elif user.is_staff %}
-            <a href="{% url 'recipe_delete' recipe.id %}">Delete</a>
+            <form method="post" action="{% url 'recipe_delete' recipe.id %}" class="inline-form" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-small">Delete</button>
+            </form>
         {% endif %}
 
         {% if user.is_authenticated %}

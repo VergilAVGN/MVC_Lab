@@ -2,10 +2,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.views.decorators.http import require_POST
 from .forms import RecipeForm, CommentForm
 from .models import Recipe, Comment, Favorite
 from django.contrib import messages
 from .cocktail_api import fetch_cocktail_by_name
+from django.core.paginator import Paginator
 # Create your views here.
 #add recipe
 @login_required
@@ -50,6 +52,7 @@ def recipe_update(request, id):
 
 #delete recipe
 @login_required
+@require_POST
 def recipe_delete(request, id):
     recipe = get_object_or_404(Recipe, id=id)
 
@@ -73,7 +76,19 @@ def recipe_list(request):
     elif sort == 'author':
         recipes = recipes.order_by('user__username')
 
-    return render(request, 'recipes/list.html', {'recipes': recipes, 'query': query})
+    if not sort:
+        recipes = recipes.order_by('-id')
+
+    paginator = Paginator(recipes, 8)  # 8 recipes per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'recipes/list.html', {
+        'recipes': page_obj,
+        'page_obj': page_obj,
+        'query': query,
+        'sort': sort,
+    })
 
 def recipe_detail(request, id):
     recipe = get_object_or_404(Recipe, id=id)
